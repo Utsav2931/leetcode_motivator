@@ -1,4 +1,5 @@
-// windowManager.js
+// Manages creating of main window and returns reference to it so that all the 
+// file can use a single reference.
 const { BrowserWindow } = require("electron");
 
 let mainWindow;
@@ -10,6 +11,7 @@ function createMainWindow() {
     webPreferences: {
       nodeIntegration: true,
     },
+    show: false, // By default we don't want to show the window on creation.
   });
 
   return mainWindow;
@@ -21,5 +23,5 @@ function getMainWindow() {
 
 module.exports = {
   createMainWindow,
-  getMainWindow, // Export the mainWindow instance for access in other files
+  getMainWindow, 
 };

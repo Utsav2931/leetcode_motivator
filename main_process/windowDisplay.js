@@ -1,3 +1,6 @@
+// Will check if the user needs to solve a question today 
+// If not it will display the window with the quesion
+
 const { getMainWindow } = require("./manageWindows");
 const { NeedToSolve } = require("./needToSolve");
 
@@ -9,9 +12,10 @@ async function sleep(minutes) {
 async function WindowDisplay() {
   while (!NeedToSolve()) {
     console.log("Can not display windows");
-    await sleep(1);
-  }
+    await sleep(1); // Change the value in the final version.
+  } 
   const mainWindow = getMainWindow();
+  mainWindow.show()
   mainWindow.loadURL("https://leetcode.com/problems/two-sum/description/");
   mainWindow.on("close", (event) => {
     event.preventDefault();
