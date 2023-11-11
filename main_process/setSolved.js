@@ -4,7 +4,7 @@ const Store = require("electron-store");
 
 const store = new Store();
 
-const SetSolved = () => {
+const setSolved = () => {
     const currentDate = new Date();
     store.set('lastSolvedDate', {
         year: currentDate.getFullYear(),
@@ -15,5 +15,5 @@ const SetSolved = () => {
 }
 
 module.exports = {
-    SetSolved
+    setSolved
 }

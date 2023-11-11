@@ -3,8 +3,8 @@
 // to see if the submitted ans is right or not.
 
 const { session } = require("electron");
-const { SetSolved } = require("./setSolved");
-const { WindowDisplay } = require("./windowDisplay");
+const { setSolved } = require("./setSolved");
+const { windowDisplay } = require("./windowDisplay");
 const { getMainWindow } = require("./manageWindows");
 
 const filter = {
@@ -13,7 +13,7 @@ const filter = {
 
 let tempDataCopy = '';
 
-const RequestListner = () => {
+const requestListner = () => {
 
   const mainWindow = getMainWindow();
 
@@ -31,15 +31,17 @@ const RequestListner = () => {
           return response.json();
         })
         .then((data) => {
+          // console.log('Data: ',data)
           // Need this because sometime there are two response with the same response data
-          // and it calls SetSolved() and WindowDisplay() twice because the request is being made twice
+          // and it calls setSolved() and windowDisplay() twice because the request is being made twice
           if (
             data.status_msg == "Accepted" &&
-            tempDataCopy != data.status_msg
+            tempDataCopy != data.status_msg && 
+            data.runtime_percentile // Becauss code run also has the same status_msg We only want to continue this if the user makes a submission.
           ) {
             mainWindow.hide();
-            SetSolved();
-            WindowDisplay();
+            setSolved();
+            windowDisplay();
           }
           tempDataCopy = data?.status_msg ? data.status_msg : '';
 
@@ -54,5 +56,5 @@ const RequestListner = () => {
 };
 
 module.exports = {
-  RequestListner,
+  requestListner,
 };

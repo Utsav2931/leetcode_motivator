@@ -9,7 +9,7 @@ async function sleep(minutes) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
-async function WindowDisplay() {
+async function windowDisplay() {
   while (!NeedToSolve()) {
     console.log("Can not display windows");
     await sleep(1); // Change the value in the final version.
@@ -25,5 +25,5 @@ async function WindowDisplay() {
 }
 
 module.exports = {
-  WindowDisplay,
+  windowDisplay,
 };

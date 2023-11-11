@@ -4,7 +4,7 @@ const { getMainWindow } = require("./manageWindows");
 
 let tray;
 
-const InitilizeTray = () => {
+const initilizeTray = () => {
   const mainWindow = getMainWindow();
   tray = new Tray("assets/imgs/logo.png");
   // Layout of tray menu when user clicks on it and what you you want to do for each lable.
@@ -29,5 +29,5 @@ const InitilizeTray = () => {
 };
 
 module.exports = {
-  InitilizeTray,
+  initilizeTray,
 };
