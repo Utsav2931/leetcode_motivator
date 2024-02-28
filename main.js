@@ -10,6 +10,10 @@ store.clear();
 
 let mainWindow, tray;
 
+app.commandLine.appendSwitch('ignore-gpu-blacklist');
+app.commandLine.appendSwitch('disable-gpu');
+app.commandLine.appendSwitch('disable-gpu-compositing');
+
 app.whenReady().then(() => {
   mainWindow = createMainWindow();
   windowDisplay();
