@@ -16,26 +16,53 @@ const scrapNeetCode = async () => {
       console.log(value);
     }
     // await element.dispose();
-    const tableElements = await page.$$("td>a");
+    const tableElements = await page.$$("tbody tr");
     const hrefs = [];
     const problemNames = [];
+    const difficulties = [];
+
+    console.log(tableElements.length);
 
     for (const tableElement of tableElements) {
-      const tableValue = await page.evaluate(
+      const anchorElement = await tableElement.$("a");
+
+      const problemName = await page.evaluate(
         (el) => el.textContent,
-        tableElement,
+        anchorElement
       );
-      if (tableValue === "") continue;
-      const hrefValu = await page.evaluate(
+      if (problemName === "") continue;
+
+      const hrefValue = await page.evaluate(
         (el) => el.getAttribute("href"),
-        tableElement,
+        anchorElement
       );
-      if (!hrefValu.includes("leetcode.com/problems")) continue;
-      problemNames.push(tableValue);
-      hrefs.push(hrefValu);
+
+      if (!hrefValue.includes("leetcode.com/problems")) continue;
+
+      const bElement = await tableElement.$("b");
+      const difficulty = await page.evaluate((el) => el.innerHTML, bElement);
+
+      problemNames.push(problemName);
+      hrefs.push(hrefValue);
+      difficulties.push(difficulty);
     }
+
+    // for (const tableElement of tableElements) {
+    //   const tableValue = await page.evaluate(
+    //     (el) => el.textContent,
+    //     tableElement,
+    //   );
+    //   if (tableValue === "") continue;
+    //   const hrefValu = await page.evaluate(
+    //     (el) => el.getAttribute("href"),
+    //     tableElement,
+    //   );
+    //   if (!hrefValu.includes("leetcode.com/problems")) continue;
+    //   problemNames.push(tableValue);
+    //   hrefs.push(hrefValu);
+    // }
     for (let i = 0; i < problemNames.length; i++) {
-      console.log(problemNames[i] + " " + hrefs[i]);
+      console.log(problemNames[i] + " " + hrefs[i] +" " + difficulties[i]);
     }
     console.log(hrefs.length);
   } catch (e) {
