@@ -6,9 +6,12 @@ const scrapNeetCode = async () => {
 
   try {
     await page.goto("https://neetcode.io/practice");
+
+    // To get types of question list
     const elements = await page.$$("ul .tab-link");
     for (const element of elements) {
       const value = await page.evaluate((el) => el.innerHTML, element);
+      // Only select Neetcode all
       if (value.includes("NeetCode All")) {
         await element.click();
         console.log("Element clicked");
@@ -16,6 +19,8 @@ const scrapNeetCode = async () => {
       console.log(value);
     }
     // await element.dispose();
+    
+    // Get the table rows
     const tableElements = await page.$$("tbody tr");
     const hrefs = [];
     const problemNames = [];
@@ -24,6 +29,7 @@ const scrapNeetCode = async () => {
     console.log(tableElements.length);
 
     for (const tableElement of tableElements) {
+      // This will contain question name and href to the leetcode.
       const anchorElement = await tableElement.$("a");
 
       const problemName = await page.evaluate(
@@ -39,6 +45,7 @@ const scrapNeetCode = async () => {
 
       if (!hrefValue.includes("leetcode.com/problems")) continue;
 
+      // This will contain difficulty of the question.
       const bElement = await tableElement.$("b");
       const difficulty = await page.evaluate((el) => el.innerHTML, bElement);
 
