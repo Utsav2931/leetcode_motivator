@@ -19,14 +19,10 @@ const scrapNeetCode = async () => {
       console.log(value);
     }
     // await element.dispose();
-    
+
     // Get the table rows
     const tableElements = await page.$$("tbody tr");
-    const hrefs = [];
-    const problemNames = [];
-    const difficulties = [];
-
-    console.log(tableElements.length);
+    const problemList = [];
 
     for (const tableElement of tableElements) {
       // This will contain question name and href to the leetcode.
@@ -34,44 +30,29 @@ const scrapNeetCode = async () => {
 
       const problemName = await page.evaluate(
         (el) => el.textContent,
-        anchorElement
+        anchorElement,
       );
       if (problemName === "") continue;
 
-      const hrefValue = await page.evaluate(
+      const href = await page.evaluate(
         (el) => el.getAttribute("href"),
-        anchorElement
+        anchorElement,
       );
 
-      if (!hrefValue.includes("leetcode.com/problems")) continue;
+      if (!href.includes("leetcode.com/problems")) continue;
 
       // This will contain difficulty of the question.
       const bElement = await tableElement.$("b");
       const difficulty = await page.evaluate((el) => el.innerHTML, bElement);
 
-      problemNames.push(problemName);
-      hrefs.push(hrefValue);
-      difficulties.push(difficulty);
+      problemList.push({
+        problemName: problemName,
+        difficulty: difficulty,
+        href: href,
+      });
     }
 
-    // for (const tableElement of tableElements) {
-    //   const tableValue = await page.evaluate(
-    //     (el) => el.textContent,
-    //     tableElement,
-    //   );
-    //   if (tableValue === "") continue;
-    //   const hrefValu = await page.evaluate(
-    //     (el) => el.getAttribute("href"),
-    //     tableElement,
-    //   );
-    //   if (!hrefValu.includes("leetcode.com/problems")) continue;
-    //   problemNames.push(tableValue);
-    //   hrefs.push(hrefValu);
-    // }
-    for (let i = 0; i < problemNames.length; i++) {
-      console.log(problemNames[i] + " " + hrefs[i] +" " + difficulties[i]);
-    }
-    console.log(hrefs.length);
+    console.log(problemList.length);
   } catch (e) {
     console.log("An error occured:", e);
   } finally {
