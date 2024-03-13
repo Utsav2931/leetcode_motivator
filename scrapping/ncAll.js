@@ -1,4 +1,5 @@
 const puppeteer = require("puppeteer");
+const { storeData } = require("../db/store_data");
 
 const scrapNeetCode = async () => {
   const browser = await puppeteer.launch();
@@ -53,6 +54,8 @@ const scrapNeetCode = async () => {
     }
 
     console.log(problemList.length);
+    await storeData(problemList, "neetcode_all");
+    console.log("Wait over");
   } catch (e) {
     console.log("An error occured:", e);
   } finally {
