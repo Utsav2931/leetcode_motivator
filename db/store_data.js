@@ -22,7 +22,11 @@ const storeData = async (problemList, type) => {
 };
 
 const storeProblems = async (problemList, type) => {
-  const placeholders = problemList.map((problem) => "(?,?,?,?)").join(",");
+  let placeholders;
+
+  if (type === "neetcode_all") placeholders = problemList.map((problem) => "(?,?,?,?)").join(",");
+  else placeholders = problemList.map((problem) => "(?,?,?,?,?)").join(",");
+
   const query = `INSERT OR IGNORE INTO ${type} VALUES` + placeholders;
   const convertedList = convertToQuertArgs(problemList);
   console.log(convertedList[0], convertedList.length);
@@ -45,18 +49,23 @@ const convertToQuertArgs = (problemList) => {
     convertedList.push(`${problem.difficulty}`);
     convertedList.push(`${problem.href}`);
     convertedList.push(0);
+    if ("problemType" in problem) {
+      convertedList.push(`${problem.problemType}`);
+    }
   }
   return convertedList;
 };
 
 const createTables = (type) => {
   return new Promise((resolve, reject) => {
+    const problemType = type !== "neetcode_all" ? "Type VARCHAR(30)," : "";
     const query = `CREATE TABLE IF NOT EXISTS ${type} 
 				(
 					ProblemName VARCHAR(255), 
 					Difficulty text(10),
 					Href VARCHAR(255),
 					Solved BOOL,
+					${problemType}
 					PRIMARY KEY (ProblemName)
 				);
 			`;
