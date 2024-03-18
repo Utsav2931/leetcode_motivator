@@ -5,7 +5,7 @@
 const { session } = require("electron");
 const { setSolved } = require("./setSolved");
 const { windowDisplay } = require("./windowDisplay");
-const { getMainWindow } = require("./manageWindows");
+const { getLcWindow: getMainWindow } = require("../browser_windows/manageWindows");
 
 const filter = {
   urls: ["https://leetcode.com/*", "*://electron.github.io/*"],

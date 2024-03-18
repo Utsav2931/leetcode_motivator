@@ -1,0 +1,10 @@
+* {
+  padding: 0;
+  margin: 0;
+  border: 0px;
+}
+body, html{
+  height: 100%;
+  overflow: hidden;
+  background-color: #403c3c;
+}

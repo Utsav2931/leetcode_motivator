@@ -1,6 +1,6 @@
 const { Tray, Menu } = require("electron");
 const { NeedToSolve } = require("./needToSolve");
-const { getMainWindow } = require("./manageWindows");
+const { getLcWindow: getMainWindow } = require("../browser_windows/manageWindows");
 
 let tray;
 
